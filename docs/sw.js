@@ -1,6 +1,7 @@
-const CACHE = 'sakaide-gominohi-v4-2';
+const CACHE = 'sakaide-gominohi-v4-3';
 const CORE = ['./', './index.html', './style.css', './schedule.js', './geo.js', './release.js',
-  './map.js', './app.js', './manifest.webmanifest', './icon.svg', './assets/seto-ohashi.webp'];
+  './map.js', './app.js', './manifest.webmanifest', './assets/seto-ohashi.webp',
+  './assets/app-icon-32.png', './assets/app-icon-180.png', './assets/app-icon-192.png', './assets/app-icon-512.png'];
 const coreURLs = new Set(CORE.map(path => new URL(path, self.registration.scope).href));
 
 self.addEventListener('install', event => event.waitUntil(

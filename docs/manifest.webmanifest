@@ -1,1 +1,24 @@
-{"name":"ごみの日。｜坂出市ごみ収集日","short_name":"ごみの日。","lang":"ja","start_url":"./","display":"standalone","background_color":"#f5f8fc","theme_color":"#1564aa","description":"坂出市のごみ収集日がすぐわかる非公式試作アプリ","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
+{
+  "name": "ごみの日。｜坂出市ごみ収集日",
+  "short_name": "ごみの日。",
+  "lang": "ja",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f8fc",
+  "theme_color": "#1564aa",
+  "description": "坂出市のごみ収集日がすぐわかる非公式試作アプリ",
+  "icons": [
+    {
+      "src": "assets/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
