@@ -1,0 +1,52 @@
+name: 坂出市の公式収集日を確認
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/check-sakaide-schedule.yml'
+      - 'scripts/monitor_official.py'
+      - 'reference/official-baseline.json'
+  schedule:
+    - cron: '0 21 * * *' # 06:00 JST. Scheduled runs may start late.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: 公式ページと添付資料を取得して差分を記録
+        run: python3 -B scripts/monitor_official.py --archive
+      - name: 監視結果を保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sakaide-monitor
+          path: monitor-result/
+          retention-days: 30
+          if-no-files-found: error
+      - name: 確認が必要な場合は実行結果に記録
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path('monitor-result/report.json')
+          if not path.exists():
+              raise SystemExit('監視報告を作成できませんでした。')
+          report = json.loads(path.read_text())
+          message = (f"確認対象 {len(report['sources'])} 件、差分 {len(report['changed'])} 件、"
+                     f"取得エラー {len(report['errors'])} 件。")
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## 坂出市公式収集日の監視\n\n' + message + '\n\n')
+              if report['requires_human_review']:
+                  out.write('sakaide-monitor 成果物を確認してください。配信用データは更新されていません。\n')
+          if report['requires_human_review']:
+              raise SystemExit('公式資料の確認が必要です。')
+          PY
