@@ -18,12 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: 公式ページと添付資料を取得して差分を記録
         run: python3 -B scripts/monitor_official.py --archive
       - name: 監視結果を保存
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: sakaide-monitor
           path: monitor-result/
@@ -47,6 +47,9 @@ jobs:
               out.write('## 坂出市公式収集日の監視\n\n' + message + '\n\n')
               if report['requires_human_review']:
                   out.write('sakaide-monitor 成果物を確認してください。配信用データは更新されていません。\n')
+          if report['errors']:
+              raise SystemExit('公式資料の取得に失敗しました。')
           if report['requires_human_review']:
-              raise SystemExit('公式資料の確認が必要です。')
+              reason = '初回資料の照合待ち' if not report['baseline_present'] else '差分の照合待ち'
+              print(f'::notice::{reason}。原本の取得は完了しました。')
           PY
