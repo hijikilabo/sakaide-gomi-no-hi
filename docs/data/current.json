@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "revokedThrough": 0,
+  "release": {
+    "version": "2026-h2-sakaide-1",
+    "sequence": 1,
+    "sha256": "7e24e17bbd79310717ddaa3706feb7bcfa84cfa31fb9c81f871a8fc47f55d154"
+  }
+}
